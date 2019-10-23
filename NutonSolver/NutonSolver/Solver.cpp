@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// расчет системы уравнений
 static	double	ft_Calculate_matrix_elem(vector<Constraint> Constraints, vector<Point*> points, double *Ls, size_t equationNmb, size_t derivativeNmb)
 {
 	double res = 0;
@@ -39,7 +40,8 @@ static	double	ft_Calculate_matrix_elem(vector<Constraint> Constraints, vector<Po
 	return (res);
 }
 
-static	double	ft_�alculate_delta(double *lJacobian, vector<Constraint> Constraints, vector<Point*> points, double *Ls)
+// расчет дельты к координатам
+static	double	ft_Calculate_delta(double *lJacobian, vector<Constraint> Constraints, vector<Point*> points, double *Ls)
 {
 	double	res = 0,
 			tmp;
@@ -148,13 +150,13 @@ void Solver(vector<Constraint> Constraints, vector<Point*> points)
 		for (size_t i = 0; (i < points.size() * 2) && (i < matrixSize); i++)
 		{
 			if ((i + 1) % 2 == 1)
-				points[i / 2]->dx += ft_�alculate_delta(mJacobian[i], Constraints, points, Ls);
+				points[i / 2]->dx += ft_Calculate_delta(mJacobian[i], Constraints, points, Ls);
 			else
-				points[i / 2]->dy += ft_�alculate_delta(mJacobian[i], Constraints, points, Ls);
+				points[i / 2]->dy += ft_Calculate_delta(mJacobian[i], Constraints, points, Ls);
 		}
 
 		for (size_t i = points.size() * 2; i < Constraints.size(); i++)
-			Ls[i - points.size() * 2] += ft_�alculate_delta(mJacobian[i], Constraints, points, Ls);
+			Ls[i - points.size() * 2] += ft_Calculate_delta(mJacobian[i], Constraints, points, Ls);
 
 		//-- Calculate Norm
 		norm = 0;
