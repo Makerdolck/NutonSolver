@@ -2,6 +2,7 @@
 
 #include "Point.h"
 
+// класс ограничения
 class Constraint
 {
 private:
@@ -18,8 +19,12 @@ public:
 
 	double	value;
 
-	double (*func)(Point, Point, Point, Point, double);
+	double (*func)(Point, Point, Point, Point, double); // pointer to constraint function
 
+	// A1, A2 - точки на одной прямой
+	// B1, B2 - точки на другой прямой :)
+
+	// derivations of constraint function
 	double (*func_dA1x)(Point, Point, Point, Point, double);
 	double (*func_dA1y)(Point, Point, Point, Point, double);
 	double (*func_dA2x)(Point, Point, Point, Point, double);
@@ -110,8 +115,8 @@ public:
 	~Constraint();
 
 	double	Function();
-	double	Derivative(Point *point, bool xy);
-	double	SecondDerivative(Point* point_d1, bool xy_d1, Point *point_d2, bool xy_d2);
+	double	Derivative(Point *point, bool xy);	// в зависимости от xy возвращает нужную производную
+	double	SecondDerivative(Point* point_d1, bool xy_d1, Point *point_d2, bool xy_d2);	// аналогично с первой производной
 
 	void	Fill_Free();
 };

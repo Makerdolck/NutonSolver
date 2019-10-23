@@ -17,7 +17,7 @@ void	Print_matrix(double** arr, int size)
 
 // Matrix transpose function
 template <typename T>
-static	void	TransponMtx(T** matr, T** tMatr, int n) {//
+static void TransponMtx(T** matr, T** tMatr, int n) {//
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
 			tMatr[j][i] = matr[i][j];
@@ -79,7 +79,7 @@ static	double	Det(double** matr, int n)
 
 //--	Inverting
 
-void			Inverting_the_matrix(double** matrix, int size)
+void Inverting_the_matrix(double** matrix, int size)
 {
 	double det;
 

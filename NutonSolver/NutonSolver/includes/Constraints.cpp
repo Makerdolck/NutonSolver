@@ -1,6 +1,13 @@
 #include <cmath>
 #include "Constraints.h"
 
+// helping functions for angle constraint between two lines
+double helperFunction(double x1, double x2, double y1, double y2)
+{
+
+	return (x1 * x2 + y1 * y2) / ((sqrt(x1 * x1 + y1 * y1) * (sqrt(x2 * x2 + y2 * y2))));
+}
+
 
 /*																							Constraint_Match_2_points_x				*/
 
@@ -391,29 +398,159 @@ double Constraint_Angle_of_2_lines(Point A1, Point A2, Point B1, Point B2, doubl
 	return (angle - _angle);
 }
 
-//double Constraint_Angle_of_2_lines_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle)
-//{
-//	double x1, x2, y1, y2;
-//	double res, f, g, df, dg;
-//
-//	x1 = A1.x + A1.dx - A2.x - A2.dx;
-//	y1 = A1.y + A1.dy - A2.y - A2.dy;
-//
-//	x2 = B1.x + B1.dx - B2.x - B2.dx;
-//	y2 = B1.y + B1.dy - B2.y - B2.dy;
-//
-//	f = (x1 * x2 + y1 * y2);
-//	g = sqrt(x1 * x1 + y1 * y1) * sqrt(x2 * x2 + y2 * y2);
-//
-//	df = B1.q + B1.x - B2.q - B2.x;
-//	dg =							;	// (f·g)' = f'·g + f·g'
-//
-//	res = df * g - f * dg / (pow(g, 2));
-//
-//	return (res);
-//}
+double Constraint_Angle_of_2_lines_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double x1_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
 
-/*																							Constraint_Horizontal_line				*/
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	x1_h = A1.x + A1.dx + h - A2.x - A2.dx;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+
+	double derivation = helperFunction(x1_h, x2, y1, y2) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
+
+double Constraint_Angle_of_2_lines_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double x1_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	x1_h = A1.x + A1.dx + h - A2.x - A2.dx - h;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+
+	double derivation = helperFunction(x1_h, x2, y1, y2) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
+
+double Constraint_Angle_of_2_lines_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double y1_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	y1_h = A1.y + A1.dy + h - A2.y - A2.dy;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+
+	double derivation = helperFunction(x1, x2, y1_h, y2) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
+
+double Constraint_Angle_of_2_lines_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double y1_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	y1_h = A1.y + A1.dy - A2.y - A2.dy - h;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+
+	double derivation = helperFunction(x1, x2, y1_h, y2) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
+
+double Constraint_Angle_of_2_lines_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double x2_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	x2_h = B1.x + B1.dx + h - B2.x - B2.dx;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+
+	double derivation = helperFunction(x1, x2_h, y1, y2) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
+
+double Constraint_Angle_of_2_lines_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double x2_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	x2_h = B1.x + B1.dx - B2.x - B2.dx - h;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+
+	double derivation = helperFunction(x1, x2_h, y1, y2) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
+
+double Constraint_Angle_of_2_lines_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double y2_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	// y1_h = A1.y + A1.dy + h - A2.y - A2.dy;;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+	y2_h = B1.y + B1.dy + h - B2.y - B2.dy;
+
+	double derivation = helperFunction(x1, x2, y1, y2_h) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
+
+double Constraint_Angle_of_2_lines_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+	double y2_h;
+	double angle;
+	// step for counting derivation
+	double h = 0.01;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;
+	// y1_h = A1.y + A1.dy + h - A2.y - A2.dy;;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;
+	y2 = B1.y + B1.dy - B2.y - B2.dy;
+	y2_h = B1.y + B1.dy - B2.y - B2.dy - h;
+
+	double derivation = helperFunction(x1, x2, y1, y2_h) - helperFunction(x1, x2, y1, y2) / h;
+	return derivation;
+}
 
 double Constraint_Horizontal_line(Point A1, Point A2, Point B1, Point B2, double _value)
 {
