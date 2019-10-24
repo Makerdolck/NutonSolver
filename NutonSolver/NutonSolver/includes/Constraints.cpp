@@ -567,7 +567,7 @@ double Constraint_Angle_of_2_lines_dA1x_dB1x(Point A1, Point A2, Point B1, Point
 	x1_h = A1.x + A1.dx + h - A2.x - A2.dx;
 	x2_h = B1.x + B1.dx + h - B2.x - B2.dx;
 
-	double second_derivation = (helperFunction(x1_h, x2_h, y1, y2) - helperFunction(x1, x2_h, y1, y2) - helperFunction(x1_h, x2)
+	double second_derivation = (helperFunction(x1_h, x2_h, y1, y2) - helperFunction(x1, x2_h, y1, y2) - helperFunction(x1_h, x2, y1, y2)
 	+ helperFunction(x1, x2, y1, y2)) / pow(h, 2);
 
 	return second_derivation;
