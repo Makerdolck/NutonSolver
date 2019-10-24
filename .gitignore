@@ -175,13 +175,18 @@ rcf/
 AppPackages/
 BundleArtifacts/
 Package.StoreAssociation.xml
-_pkginfo.txt
+_pkginfo.txt   
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
+
+# Visual Studio Files
+.vscode/
+*.exe
+*.json
 
 # Others
 ClientBin/

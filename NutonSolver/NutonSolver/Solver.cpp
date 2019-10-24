@@ -3,6 +3,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include <algorithm>
 
 #include "Header.h"
 
@@ -169,13 +170,42 @@ void Solver(vector<Constraint> Constraints, vector<Point*> points)
 
 	} while (fabs(norm_old - norm) >= eps);
 
+	double temp_dx = 0, temp_dy = 0;
+	bool isFixed = false;
 	//-- Recalculation of point's coordinates
 	for (size_t i = 0; i < points.size(); i++)
 	{
-		points[i]->x += points[i]->dx;
-		points[i]->y += points[i]->dy;
-
+		if (points.at(i)->fixed)
+		{
+			isFixed = true;
+			temp_dx = points.at(i)->dx;
+			temp_dy = points.at(i)->dy;
+		}
+		if (!points.at(i)->fixed)
+		{
+			points[i]->x += points[i]->dx;
+			points[i]->y += points[i]->dy;
+		}
 		points[i]->dx = 0;
 		points[i]->dy = 0;
 	}
+	if (isFixed)
+	{
+		auto it = find_if(points.begin(), points.end(), [](Point* a) {return !(a->fixed);});
+		(*it)->x -= temp_dx;
+		(*it)->y -= temp_dy;
+	}
+}
+
+int main()
+{
+	Point A{2, 2};
+	Point B{2, 8, true};
+
+	vector<Point*> vPointsPtr = {&A, &B};
+
+	auto constr = CreateConstraint_Distance_between_2_points(&A, &B, 4);
+	vector<Constraint> vConstr = {constr};
+
+	Solver(vConstr, vPointsPtr);
 }
