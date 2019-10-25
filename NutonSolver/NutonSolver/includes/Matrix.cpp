@@ -15,6 +15,117 @@ void	Print_matrix(double** arr, int size)
 
 //	////	///	////
 
+// приведение матрицы коэффициентов к виду с ненулевой диагональю и соответствующее изменение вектора правых частей
+// возвращает true - если приведение - успешно
+bool	MakeDiagonal_NonZero(double** coefficients, double* rightPart, size_t currColumn, size_t numberOfEquation)
+{
+	bool result = false;
+	size_t i, row = currColumn;
+	double tempItem;
+
+	// для матрицы 1x1 ответом является ненулевость ее единственного элемента
+	if (currColumn == numberOfEquation - 1) {
+		result = coefficients[currColumn][currColumn] != 0;
+	}
+	else {
+		// пока не найдена перестановка приводящая матрицу к виду с ненулевой диагональю и пока мы можем еще просматривать строки ищем перестановку
+		while (!result && row < numberOfEquation) {
+			// если текущий элемент на диагонали нулевой ищем в столбце дальше ненулевой
+			if (coefficients[row][currColumn] != 0) {
+				// если элемент ненулевой и не лежит на диагонали меняем местами сотвествующие строки в матрице и элементы в векторе прваых частей
+				if (row != currColumn) {
+					for (i = 0; i < numberOfEquation; i++) {
+						tempItem = coefficients[currColumn][i];
+						coefficients[currColumn][i] = coefficients[row][i];
+						coefficients[row][i] = tempItem;
+					}
+					tempItem = rightPart[currColumn];
+					rightPart[currColumn] = rightPart[row];
+					rightPart[row] = tempItem;
+				}
+				// рекурсивный вызов фактически для подматрицы с размерностью на 1 меньше
+				result = MakeDiagonal_NonZero(coefficients, rightPart, currColumn + 1, numberOfEquation);
+				if (result) {
+					break;
+				}
+			}
+			row++;
+		}
+	}
+
+	return result;
+}
+
+// было ли найдено решение, если да - итог в параметре solution
+int		JacobiMethod(double** coefficients, double* rightPart, size_t numberOfEquation, double* solution, double precision)
+{
+	bool result;
+	int i, j, step = 1;
+	double* tempSolution;
+
+	tempSolution = new double[numberOfEquation];
+
+	// приведение матрицы коэффициентов к виду с ненулевой диагональю и соответствующее изменение вектора правых частей
+	result = MakeDiagonal_NonZero(coefficients, rightPart, 0, numberOfEquation);
+
+	// если приведение успешно - работаем дальше
+	if (result) {
+		double fault = precision + 1;
+
+		// преобразуем матрицу и правую часть для дальнейшего решения
+		for (i = 0; i < numberOfEquation; i++) {
+			for (j = 0; j < numberOfEquation; j++) {
+				if (i != j) {
+					coefficients[i][j] = -coefficients[i][j] / coefficients[i][i];
+				}
+			}
+			rightPart[i] = rightPart[i] / coefficients[i][i];
+			coefficients[i][i] = 0;
+		}
+
+		// первое приближение решения - преобразованный вектор правых частей
+		for (i = 0; i < numberOfEquation; i++) {
+			solution[i] = rightPart[i];
+		}
+
+		// пока не найдено решение с допустимй погрешнстью или пока не исчерпан лимит шагов... если все расходится например
+		while (fault > precision&& step <= 1000) {
+
+			// поиск новой итерации с ее "самоиспользованием" при расчетах          
+			for (j = 0; j < numberOfEquation; j++) {
+				tempSolution[j] = 0;
+			}
+			for (i = 0; i < numberOfEquation; i++) {
+				for (j = 0; j < numberOfEquation; j++) {
+					tempSolution[i] = tempSolution[i] + coefficients[i][j] * solution[j];
+				}
+				tempSolution[i] = tempSolution[i] + rightPart[i];
+			}
+
+			// расчет погрешности
+			fault = 0.0;
+			for (j = 0; j < numberOfEquation; j++) {
+				fault = fault + (solution[j] - tempSolution[j]) * (solution[j] - tempSolution[j]);
+			}
+			fault = sqrt(fault);
+
+			// сохранение полученной новой итерации
+			for (j = 0; j < numberOfEquation; j++) {
+				solution[j] = tempSolution[j];
+			}
+			step++;
+		}
+	}
+	else {
+		step = 1001;
+	}
+
+
+	return step;
+}
+
+//	////	///	////
+
 // Matrix transpose function
 template <typename T>
 static void TransponMtx(T** matr, T** tMatr, int n) {//

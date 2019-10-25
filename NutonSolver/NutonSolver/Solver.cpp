@@ -92,86 +92,124 @@ static	double	ft_Equation_i(vector<Constraint> Constraints, vector<Point*> point
 	return (res);
 }
 
-
-// TODO: Добавить выражение 6.45 для вычисления значения вектора на следующей итеррации
-static double* ft_JacobiMethod(double** _mJacobian, /*double* _F,*/ const size_t _n, vector<Point*>& points, vector<Constraint>& vConstr, double* Ls)
+static	void	ft_Jacobi(size_t matrixSize, double** mJacobian, double* f, double* results)
 {
-	// size_t n = sizeof()
-	double* y = new double[_n];
-	double* f = new double[_n];
-	std::vector<double> vDiff;
+	double* TempX = new double[matrixSize];
+	double norm; // норма, определяемая как наибольшая разность компонент столбца иксов соседних итераций.
 
-	// добавить метод для приведения матрицы к ступенчатому виду (возможно)
-
-	// заполнение вектора значений функций на предыдущей итеррации
-	for (size_t i = 0; i < _n; i++)
-		f[i] = ft_Equation_i(vConstr, points, Ls, i);
-	
-	// итератор для максимальнго элемента
-	auto it_max = vDiff.end();
-
-
-	// итеррации для поиска вектора переменных на (k-1)-ой итеррации в выражени 6.44
-	// условие окончания - норма вектора из разниц значений переменных на смежных итеррациях
-	// должно быть меньше eps = .001
-	do
-	{
-		for (auto& ptr_it : points)
-		{
-			ptr_it->x += ptr_it->dx;
-			ptr_it->y += ptr_it->dy;
-		}
-		for (size_t i = 0; i < _n; i++)
-		{
-			double sum = 0;
-			for(size_t j = 0; j < _n; j++)
-			{
-				if (j != i && (i + 1) % 2 == 1)
-					sum += _mJacobian[i][j] * points[i]->dx;
-				if (j != i && (i + 1) % 2 == 0)
-					sum += _mJacobian[i][j] * points[i]->dy;
+	do {
+		for (int i = 0; i < matrixSize; i++) {
+			TempX[i] = f[i];
+			for (int g = 0; g < matrixSize; g++) {
+				if (i != g)
+					TempX[i] -= mJacobian[i][g] * results[g];
 			}
-			y[i] = (f[i] - sum) / _mJacobian[i][i];
-
-			for (size_t i = 0; i < _n; i++)
-				if ((i + 1) % 2)
-					vDiff.push_back(y[i] - points[i]->dx);
-				else
-					vDiff.push_back(y[i] - points[i]->dy);
-
-			// вычисление нормы разности
-			it_max = std::max_element(vDiff.begin(), vDiff.end());
+			TempX[i] /= mJacobian[i][i];
 		}
-	}
-	while (*it_max >= eps);
-	return y;
+		norm = fabs(results[0] - TempX[0]);
+		for (int h = 0; h < matrixSize; h++) {
+			if (fabs(results[h] - TempX[h]) > norm)
+				norm = fabs(results[h] - TempX[h]);
+			results[h] = TempX[h];
+		}
+	} while (norm > eps);
+	delete[] TempX;
 }
 
-static void ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
+static	void	ft_GaussMethod(double** coefficients, double* freeCoefficients, size_t dimension, double* result)
+{
+	double d, s;
+
+	for (size_t k = 0; k < dimension; k++) // прямой ход
+	{
+		for (size_t j = k + 1; j < dimension; j++)
+		{
+			d = coefficients[j][k] / coefficients[k][k]; // формула (1)
+			for (size_t i = k; i < dimension; i++)
+			{
+				coefficients[j][i] = coefficients[j][i] - d * coefficients[k][i]; // формула (2)
+			}
+			freeCoefficients[j] = freeCoefficients[j] - d * freeCoefficients[k]; // формула (3)
+		}
+	}
+
+	for (long int k = (long int)dimension - 1; k >= 0; k--) // обратный ход
+	{
+		d = 0;
+		for (long int j = k + 1; j < dimension; j++)
+		{
+			s = coefficients[k][j] * result[j]; // формула (4)
+			d = d + s; // формула (4)
+		}
+		result[k] = (freeCoefficients[k] - d) / coefficients[k][k]; // формула (4)
+	}
+}
+
+static	void	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points, double** mJacobian, size_t matrixSize, double* Ls)
+{
+	double* f;
+	double* results;
+
+	if (!(f = (double*)calloc(matrixSize, sizeof(double))))
+		return;
+	if (!(results = (double*)calloc(matrixSize, sizeof(double))))
+	{
+		free(f);
+		return;
+	}
+
+	// заполнение вектора значений функций на предыдущей итеррации
+	for (size_t i = 0; i < matrixSize; i++)
+	{
+		f[i] = ft_Equation_i(Constraints, points, Ls, i);
+		results[i] = 0;
+	}
+
+	MakeDiagonal_NonZero(mJacobian, f, 0, matrixSize);
+
+	ft_GaussMethod(mJacobian, f, matrixSize, results);
+
+
+	for (size_t i = 0; (i < points.size() * 2) && (i < matrixSize); i++)
+	{
+		if ((i + 1) % 2 == 1)
+			points[i / 2]->dx -= results[i];
+		else
+			points[i / 2]->dy -= results[i];
+	}
+
+	for (size_t i = points.size() * 2; i < matrixSize; i++)
+		Ls[i - points.size() * 2] -= results[i];
+
+	free(results);
+	free(f);
+}
+
+static	void	ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
 {
 	size_t			matrixSize;
 
-	double			*Ls,
-					*amendments,
-					**mJacobian,
-					norm,
-					norm_old;
+	double* Ls,
+		* amendments,
+		** mJacobian,
+		norm,
+		norm_old;
 
 	matrixSize = (Constraints.size() + points.size() * 2);
 
-	Ls = (double*)malloc(points.size() * 2 * sizeof(double));
-	amendments = (double*)malloc(matrixSize * sizeof(double));
+	Ls = (double*)calloc(points.size() * 2, sizeof(double));
+	amendments = (double*)calloc(matrixSize, sizeof(double));
 	if (!Ls)			return;
 	if (!amendments)	return;
 	for (size_t i = 0; i < points.size() * 2; i++)
 		Ls[i] = 1;
 
-	mJacobian = (double**)malloc(matrixSize * sizeof(double*));
+	mJacobian = (double**)calloc(matrixSize, sizeof(double*));
 	if (!mJacobian)
 		return;
 	for (size_t i = 0; i < matrixSize; i++)
 	{
-		mJacobian[i] = (double*)malloc(matrixSize * sizeof(double));
+		mJacobian[i] = (double*)calloc(matrixSize, sizeof(double));
 		if (!mJacobian[i])
 			return;
 		for (size_t j = 0; j < matrixSize; j++)
@@ -200,19 +238,7 @@ static void ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
 			}
 		}
 
-		// Inverting_the_matrix(mJacobian, matrixSize); // fix this shit
-
-		//-- Calculation of new deltas
-		for (size_t i = 0; (i < points.size() * 2) && (i < matrixSize); i++)
-		{
-			if ((i + 1) % 2 == 1)
-				points[i / 2]->dx += ft_Calculate_delta(mJacobian[i], Constraints, points, Ls);
-			else
-				points[i / 2]->dy += ft_Calculate_delta(mJacobian[i], Constraints, points, Ls);
-		}
-
-		for (size_t i = points.size() * 2; i < Constraints.size(); i++)
-			Ls[i - points.size() * 2] += ft_Calculate_delta(mJacobian[i], Constraints, points, Ls);
+		ft_FindDeltas(Constraints, points, mJacobian, matrixSize, Ls);
 
 		//-- Calculate Norm
 		norm = 0;
@@ -225,37 +251,58 @@ static void ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
 
 	} while (fabs(norm_old - norm) >= eps);
 
-	double temp_dx = 0, temp_dy = 0;
-	bool isFixed = false;
 	//-- Recalculation of point's coordinates
 	for (size_t i = 0; i < points.size(); i++)
 	{
 		points[i]->x += points[i]->dx;
 		points[i]->y += points[i]->dy;
+
 		points[i]->dx = 0;
 		points[i]->dy = 0;
 	}
+
+	free(Ls);
+	free(amendments);
+	for (size_t i = 0; i < matrixSize; i++)
+		free(mJacobian[i]);
+	free(mJacobian);
 }
 
-void Solver(vector<Constraint> Constraints, vector<Point*> points, Point *pointChangeable)
+void Solver(vector<Constraint> Constraints, vector<Point*> points, Point* pointChangeable1, Point* pointChangeable2)
 {
-	Point pointIdeal(pointChangeable->x, pointChangeable->y);
+	Point	pointIdeal1(pointChangeable1->x, pointChangeable1->y),
+		pointIdeal2;
+
+	if (pointChangeable2)
+		pointIdeal2 = Point(pointChangeable2->x, pointChangeable2->y);
 
 	double norm, norm_old;
 
 	ft_Solver(Constraints, points);
-	norm = sqrt(pow(pointChangeable->x - pointIdeal.x, 2) + pow(pointChangeable->y - pointIdeal.y, 2));
+
+	norm = pow(pointChangeable1->x - pointIdeal1.x, 2) + pow(pointChangeable1->y - pointIdeal1.y, 2);
+	if (pointChangeable2)
+		norm += pow(pointChangeable2->x - pointIdeal2.x, 2) + pow(pointChangeable2->y - pointIdeal2.y, 2);
+	norm = sqrt(norm);
 
 	do
 	{
 		norm_old = norm;
 
-		pointChangeable->x = pointIdeal.x;
-		pointChangeable->y = pointIdeal.y;
+		pointChangeable1->x = pointIdeal1.x;
+		pointChangeable1->y = pointIdeal1.y;
+		if (pointChangeable2)
+		{
+			pointChangeable2->x = pointIdeal2.x;
+			pointChangeable2->y = pointIdeal2.y;
+		}
 
 		ft_Solver(Constraints, points);
 
-		norm = sqrt(pow(pointChangeable->x - pointIdeal.x, 2) + pow(pointChangeable->y - pointIdeal.y, 2));
+		norm = pow(pointChangeable1->x - pointIdeal1.x, 2) + pow(pointChangeable1->y - pointIdeal1.y, 2);
+		if (pointChangeable2)
+			norm += pow(pointChangeable2->x - pointIdeal2.x, 2) + pow(pointChangeable2->y - pointIdeal2.y, 2);
+		norm = sqrt(norm);
 
 	} while (fabs(norm - norm_old) > eps);
 
@@ -263,17 +310,27 @@ void Solver(vector<Constraint> Constraints, vector<Point*> points, Point *pointC
 
 int main()
 {
-	Point A1{2, 2};
-	Point A2{2, 8};
-	Point B1{3, 2};
-	Point B2{6, 2};
+	Point A1{ 2, 2 };
+	Point A2{ 4, 8 };
+	Point B1{ 3, 2 };
+	Point B2{ 8, 2 };
 
-	vector<Point*> vPointsPtr = {&A1, &A2, &B1, &B2};
+	vector<Point*> vPointsPtr = { &A1, &A2, &B1, &B2 };
 
 	auto constr = CreateConstraint_Parallelism_of_2_lines(&A1, &A2, &B1, &B2);
 	auto constr_2 = CreateConstraint_Distance_between_2_points(&A1, &A2, 4);
-	auto constr_3 = CreateConstraint_Distance_between_2_points(&B1, &B2, 7);
-	vector<Constraint> vConstr = {constr, constr_2, constr_3};
+	auto constr_3 = CreateConstraint_Distance_between_2_points(&B1, &B2, 5);
+	vector<Constraint> vConstr = { constr, constr_2, constr_3 };
 
-	Solver(vConstr, vPointsPtr, &A1);
+	Solver(vConstr, vPointsPtr, &A2, nullptr);
+
+	cout << "PointA1 x = " << A1.x << endl;
+	cout << "PointA1 y = " << A1.y << endl << endl;
+	cout << "PointA2 x = " << A2.x << endl;
+	cout << "PointA2 y = " << A2.y << endl << endl;
+	cout << endl;
+	cout << "PointB1 x = " << B1.x << endl;
+	cout << "PointB1 y = " << B1.y << endl << endl;
+	cout << "PointB2 x = " << B2.x << endl;
+	cout << "PointB2 y = " << B2.y << endl << endl;
 }
