@@ -94,7 +94,7 @@ static	double	ft_Equation_i(vector<Constraint> Constraints, vector<Point*> point
 
 
 // TODO: Добавить выражение 6.45 для вычисления значения вектора на следующей итеррации
-static double* ft_JacobiMethod(double** _mJacobian, double* _F, const size_t _n, vector<Point*>& points, vector<Constraint>& vConstr, double* Ls)
+static double* ft_JacobiMethod(double** _mJacobian, /*double* _F,*/ const size_t _n, vector<Point*>& points, vector<Constraint>& vConstr, double* Ls)
 {
 	// size_t n = sizeof()
 	double* y = new double[_n];
@@ -110,6 +110,10 @@ static double* ft_JacobiMethod(double** _mJacobian, double* _F, const size_t _n,
 	// итератор для максимальнго элемента
 	auto it_max = vDiff.end();
 
+
+	// итеррации для поиска вектора переменных на (k-1)-ой итеррации в выражени 6.44
+	// условие окончания - норма вектора из разниц значений переменных на смежных итеррациях
+	// должно быть меньше eps = .001
 	do
 	{
 		for (auto& ptr_it : points)
@@ -226,26 +230,11 @@ static void ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
 	//-- Recalculation of point's coordinates
 	for (size_t i = 0; i < points.size(); i++)
 	{
-		// if (points.at(i)->fixed)
-		// {
-		// 	isFixed = true;
-		// 	temp_dx = points.at(i)->dx;
-		// 	temp_dy = points.at(i)->dy;
-		// }
-		// if (!points.at(i)->fixed)
-		// {
-			points[i]->x += points[i]->dx;
-			points[i]->y += points[i]->dy;
-		// }
+		points[i]->x += points[i]->dx;
+		points[i]->y += points[i]->dy;
 		points[i]->dx = 0;
 		points[i]->dy = 0;
 	}
-	// if (isFixed)
-	// {
-	// 	auto it = find_if(points.begin(), points.end(), [](Point* a) {return !(a->fixed);});
-	// 	(*it)->x -= temp_dx;
-	// 	(*it)->y -= temp_dy;
-	// }
 }
 
 void Solver(vector<Constraint> Constraints, vector<Point*> points, Point *pointChangeable)
