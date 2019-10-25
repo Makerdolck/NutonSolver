@@ -213,7 +213,7 @@ Constraint	CreateConstraint_Belonging_point_to_line(Point* A1, Point* A2, Point 
 	return (constr);
 }
 
-Constraint CreateConstraint_Angle_between_2_lines(Point* A1, Point* A2, Point* B1, Point* B2)
+Constraint CreateConstraint_Angle_between_2_lines(Point* A1, Point* A2, Point* B1, Point* B2, double _angle)
 {
 	Constraint constr;
 	constr.pointA1 = A1;

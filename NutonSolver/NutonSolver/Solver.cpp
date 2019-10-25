@@ -92,7 +92,58 @@ static	double	ft_Equation_i(vector<Constraint> Constraints, vector<Point*> point
 	return (res);
 }
 
-void Solver(vector<Constraint> Constraints, vector<Point*> points)
+
+// TODO: Добавить выражение 6.45 для вычисления значения вектора на следующей итеррации
+static double* ft_JacobiMethod(double** _mJacobian, double* _F, const size_t _n, vector<Point*>& points, vector<Constraint>& vConstr, double* Ls)
+{
+	// size_t n = sizeof()
+	double* y = new double[_n];
+	double* f = new double[_n];
+	std::vector<double> vDiff;
+
+	// добавить метод для приведения матрицы к ступенчатому виду (возможно)
+
+	// заполнение вектора значений функций на предыдущей итеррации
+	for (size_t i = 0; i < _n; i++)
+		f[i] = ft_Equation_i(vConstr, points, Ls, i);
+	
+	// итератор для максимальнго элемента
+	auto it_max = vDiff.end();
+
+	do
+	{
+		for (auto& ptr_it : points)
+		{
+			ptr_it->x += ptr_it->dx;
+			ptr_it->y += ptr_it->dy;
+		}
+		for (size_t i = 0; i < _n; i++)
+		{
+			double sum = 0;
+			for(size_t j = 0; j < _n; j++)
+			{
+				if (j != i && (i + 1) % 2 == 1)
+					sum += _mJacobian[i][j] * points[i]->dx;
+				if (j != i && (i + 1) % 2 == 0)
+					sum += _mJacobian[i][j] * points[i]->dy;
+			}
+			y[i] = (f[i] - sum) / _mJacobian[i][i];
+
+			for (size_t i = 0; i < _n; i++)
+				if ((i + 1) % 2)
+					vDiff.push_back(y[i] - points[i]->dx);
+				else
+					vDiff.push_back(y[i] - points[i]->dy);
+
+			// вычисление нормы разности
+			it_max = std::max_element(vDiff.begin(), vDiff.end());
+		}
+	}
+	while (*it_max >= eps);
+	return y;
+}
+
+static void ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
 {
 	size_t			matrixSize;
 
@@ -145,7 +196,7 @@ void Solver(vector<Constraint> Constraints, vector<Point*> points)
 			}
 		}
 
-		Inverting_the_matrix(mJacobian, matrixSize);
+		// Inverting_the_matrix(mJacobian, matrixSize); // fix this shit
 
 		//-- Calculation of new deltas
 		for (size_t i = 0; (i < points.size() * 2) && (i < matrixSize); i++)
@@ -175,37 +226,65 @@ void Solver(vector<Constraint> Constraints, vector<Point*> points)
 	//-- Recalculation of point's coordinates
 	for (size_t i = 0; i < points.size(); i++)
 	{
-		if (points.at(i)->fixed)
-		{
-			isFixed = true;
-			temp_dx = points.at(i)->dx;
-			temp_dy = points.at(i)->dy;
-		}
-		if (!points.at(i)->fixed)
-		{
+		// if (points.at(i)->fixed)
+		// {
+		// 	isFixed = true;
+		// 	temp_dx = points.at(i)->dx;
+		// 	temp_dy = points.at(i)->dy;
+		// }
+		// if (!points.at(i)->fixed)
+		// {
 			points[i]->x += points[i]->dx;
 			points[i]->y += points[i]->dy;
-		}
+		// }
 		points[i]->dx = 0;
 		points[i]->dy = 0;
 	}
-	if (isFixed)
+	// if (isFixed)
+	// {
+	// 	auto it = find_if(points.begin(), points.end(), [](Point* a) {return !(a->fixed);});
+	// 	(*it)->x -= temp_dx;
+	// 	(*it)->y -= temp_dy;
+	// }
+}
+
+void Solver(vector<Constraint> Constraints, vector<Point*> points, Point *pointChangeable)
+{
+	Point pointIdeal(pointChangeable->x, pointChangeable->y);
+
+	double norm, norm_old;
+
+	ft_Solver(Constraints, points);
+	norm = sqrt(pow(pointChangeable->x - pointIdeal.x, 2) + pow(pointChangeable->y - pointIdeal.y, 2));
+
+	do
 	{
-		auto it = find_if(points.begin(), points.end(), [](Point* a) {return !(a->fixed);});
-		(*it)->x -= temp_dx;
-		(*it)->y -= temp_dy;
-	}
+		norm_old = norm;
+
+		pointChangeable->x = pointIdeal.x;
+		pointChangeable->y = pointIdeal.y;
+
+		ft_Solver(Constraints, points);
+
+		norm = sqrt(pow(pointChangeable->x - pointIdeal.x, 2) + pow(pointChangeable->y - pointIdeal.y, 2));
+
+	} while (fabs(norm - norm_old) > eps);
+
 }
 
 int main()
 {
-	Point A{2, 2};
-	Point B{2, 8, true};
+	Point A1{2, 2};
+	Point A2{2, 8};
+	Point B1{3, 2};
+	Point B2{6, 2};
 
-	vector<Point*> vPointsPtr = {&A, &B};
+	vector<Point*> vPointsPtr = {&A1, &A2, &B1, &B2};
 
-	auto constr = CreateConstraint_Distance_between_2_points(&A, &B, 4);
-	vector<Constraint> vConstr = {constr};
+	auto constr = CreateConstraint_Parallelism_of_2_lines(&A1, &A2, &B1, &B2);
+	auto constr_2 = CreateConstraint_Distance_between_2_points(&A1, &A2, 4);
+	auto constr_3 = CreateConstraint_Distance_between_2_points(&B1, &B2, 7);
+	vector<Constraint> vConstr = {constr, constr_2, constr_3};
 
-	Solver(vConstr, vPointsPtr);
+	Solver(vConstr, vPointsPtr, &A1);
 }

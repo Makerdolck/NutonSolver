@@ -187,6 +187,7 @@ _pkginfo.txt
 .vscode/
 *.exe
 *.json
+build/
 
 # Others
 ClientBin/

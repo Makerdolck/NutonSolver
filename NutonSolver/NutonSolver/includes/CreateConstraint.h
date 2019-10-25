@@ -13,6 +13,4 @@ Constraint	CreateConstraint_Horizontal_line(Point* A1, Point* A2);
 Constraint	CreateConstraint_Vertical_line(Point* A1, Point* A2);
 Constraint	CreateConstraint_Belonging_point_to_line(Point* A1, Point* A2, Point* B1);
 
-// TODO: Add constraint for angle between lines
-
-Constraint CreateConstraint_Angle_between_2_lines(Point* A1, Point* A2, Point* B1, Point* B2);
+Constraint CreateConstraint_Angle_between_2_lines(Point* A1, Point* A2, Point* B1, Point* B2, double _angle);
