@@ -69,7 +69,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)$(ProjectName)\includes;$(IncludePath)</IncludePath>
+    <LibraryWPath>$(SolutionDir)$(ProjectName)\includes;$(WindowsSDK_MetadataPath);</LibraryWPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)$(ProjectName)\includes;$(IncludePath)</IncludePath>
+    <LibraryWPath>$(SolutionDir)$(ProjectName)\includes;$(WindowsSDK_MetadataPath);</LibraryWPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)$(ProjectName)\includes;$(IncludePath)</IncludePath>
+    <LibraryWPath>$(SolutionDir)$(ProjectName)\includes;$(WindowsSDK_MetadataPath);</LibraryWPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)$(ProjectName)\includes;$(IncludePath)</IncludePath>
+    <LibraryWPath>$(SolutionDir)$(ProjectName)\includes;$(WindowsSDK_MetadataPath);</LibraryWPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -126,6 +141,7 @@
     <ClCompile Include="includes\Constraint.cpp" />
     <ClCompile Include="includes\Constraints.cpp" />
     <ClCompile Include="includes\CreateConstraint.cpp" />
+    <ClCompile Include="includes\Json.cpp" />
     <ClCompile Include="includes\Matrix.cpp" />
     <ClCompile Include="includes\Point.cpp" />
     <ClCompile Include="Solver.cpp" />
@@ -135,6 +151,7 @@
     <ClInclude Include="includes\Constraint.h" />
     <ClInclude Include="includes\Constraints.h" />
     <ClInclude Include="includes\CreateConstraint.h" />
+    <ClInclude Include="includes\Json.h" />
     <ClInclude Include="includes\Matrix.h" />
     <ClInclude Include="includes\Point.h" />
   </ItemGroup>

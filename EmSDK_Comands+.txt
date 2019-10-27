@@ -1,0 +1,9 @@
+************* Last version for Solver
+
+em++ -O2 ../NutonSolver/NutonSolver/Solver.cpp ../NutonSolver/NutonSolver/includes/Constraint.cpp ../NutonSolver/NutonSolver/includes/Constraints.cpp ../NutonSolver/NutonSolver/includes/CreateConstraint.cpp ../NutonSolver/NutonSolver/includes/Json.cpp ../NutonSolver/NutonSolver/includes/Matrix.cpp ../NutonSolver/NutonSolver/includes/Point.cpp -o Solver.js -std=c++17 -s DEMANGLE_SUPPORT=1 --bind
+
+*******
+emsdk activate latest		- run special comand prompt
+emrun index.html		- run simple server
+python3 -m http.server 8080	- run simple server
+

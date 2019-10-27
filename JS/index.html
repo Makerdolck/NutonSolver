@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+	<title>WebAssembly Application</title>
+	</head>
+	<body>
+	<div id="container">
+	</div>
+	<button type="button" id="JustButton">Жми меня и смотри в консоль</button>
+
+	<script type="text/javascript" src="data.json"></script>
+
+	<script type="text/javascript">
+		window.onload = init;
+		var elem = 0;
+		function init()
+		{
+			var button = document.getElementById("JustButton")
+			button.onclick = handleButtonClick;
+	  	}
+
+		function readTextFile(file, callback)
+		{
+			var rawFile = new XMLHttpRequest();
+			rawFile.overrideMimeType("application/json");
+			rawFile.open("GET", file, true);
+			rawFile.onreadystatechange = function() 
+			{
+				if (rawFile.readyState === 4 && rawFile.status == "200") 
+				{
+					callback(rawFile.responseText);
+				}
+			}
+			rawFile.send(null);
+		}
+
+		// C++ functions preparation
+	  	var Module = {onRuntimeInitialized: function(){}}
+
+		// MessageHandler - OnButtonClick
+	  	function handleButtonClick() {
+			
+			readTextFile("data.json", function(text)	// text - JSON data from 'data.json'
+			{
+				var Points = Module['Solver'](text);	// Calling C++ Solver and taking result
+
+				for (var i = 0; i < Points.size(); i++) 
+				{
+					var Point = Points.get(i);
+					// for (var j = 0; j < arrElem.size(); j++)
+					// 	console.log("Value: ", arrElem.get(j));
+					console.log("ID: " + Point.get(0) + 
+								"; X = " + Point.get(1) + 
+								"; Y = " + Point.get(2));
+					console.log("\n");
+				}
+				console.log("********************************");
+			});
+		};
+	</script>
+	
+	<!-- That should be here.. After all... -->
+	<script type="text/javascript" src="Solver.js"></script>
+
+  </body>
+</html>

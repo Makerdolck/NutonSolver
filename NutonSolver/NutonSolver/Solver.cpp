@@ -1,11 +1,11 @@
 #define  _CRT_SECURE_NO_WARNINGS
 
-#include <iostream>
-#include <math.h>
-#include <vector>
-#include <algorithm>
-
 #include "Header.h"
+
+#include <emscripten.h>
+#include <emscripten/bind.h>
+#include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -185,7 +185,7 @@ static	void	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points,
 	free(f);
 }
 
-static	void	ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
+static	void	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> points)
 {
 	size_t			matrixSize;
 
@@ -268,17 +268,17 @@ static	void	ft_Solver(vector<Constraint> Constraints, vector<Point*> points)
 	free(mJacobian);
 }
 
-void Solver(vector<Constraint> Constraints, vector<Point*> points, Point* pointChangeable1, Point* pointChangeable2)
+static	void	ft_CycleApproximation(vector<Constraint> Constraints, vector<Point*> points, Point* pointChangeable1, Point* pointChangeable2)
 {
 	Point	pointIdeal1(pointChangeable1->x, pointChangeable1->y),
-		pointIdeal2;
+			pointIdeal2;
 
 	if (pointChangeable2)
 		pointIdeal2 = Point(pointChangeable2->x, pointChangeable2->y);
 
 	double norm, norm_old;
 
-	ft_Solver(Constraints, points);
+	ft_NewtonMethod(Constraints, points);
 
 	norm = pow(pointChangeable1->x - pointIdeal1.x, 2) + pow(pointChangeable1->y - pointIdeal1.y, 2);
 	if (pointChangeable2)
@@ -297,7 +297,7 @@ void Solver(vector<Constraint> Constraints, vector<Point*> points, Point* pointC
 			pointChangeable2->y = pointIdeal2.y;
 		}
 
-		ft_Solver(Constraints, points);
+		ft_NewtonMethod(Constraints, points);
 
 		norm = pow(pointChangeable1->x - pointIdeal1.x, 2) + pow(pointChangeable1->y - pointIdeal1.y, 2);
 		if (pointChangeable2)
@@ -308,29 +308,85 @@ void Solver(vector<Constraint> Constraints, vector<Point*> points, Point* pointC
 
 }
 
-int main()
+//extern "C"{
+vector<vector<double>>	Solver(string json_str)
 {
-	Point A1{ 2, 2 };
-	Point A2{ 4, 8 };
-	Point B1{ 3, 2 };
-	Point B2{ 8, 2 };
+	Point				*pointChangeable1 = nullptr;
+	Point				*pointChangeable2 = nullptr;
+	vector<Constraint>	vConstr;
+	vector<Point*>		vPointsPtr;
+	vector<Point*>		pointsChangeable;
 
-	vector<Point*> vPointsPtr = { &A1, &A2, &B1, &B2 };
+	Json_Read(json_str, &vConstr, &vPointsPtr, &pointChangeable1, &pointChangeable2);
 
-	auto constr = CreateConstraint_Parallelism_of_2_lines(&A1, &A2, &B1, &B2);
-	auto constr_2 = CreateConstraint_Distance_between_2_points(&A1, &A2, 4);
-	auto constr_3 = CreateConstraint_Distance_between_2_points(&B1, &B2, 5);
-	vector<Constraint> vConstr = { constr, constr_2, constr_3 };
+	for (size_t i = 0; i < vPointsPtr.size(); i++)
+	{
+		if (vPointsPtr[i]->fixed == false)
+			pointsChangeable.push_back(vPointsPtr[i]);
+	}
 
-	Solver(vConstr, vPointsPtr, &A2, nullptr);
+	ft_CycleApproximation(vConstr, pointsChangeable, pointChangeable1, pointChangeable2);
 
-	cout << "PointA1 x = " << A1.x << endl;
-	cout << "PointA1 y = " << A1.y << endl << endl;
-	cout << "PointA2 x = " << A2.x << endl;
-	cout << "PointA2 y = " << A2.y << endl << endl;
-	cout << endl;
-	cout << "PointB1 x = " << B1.x << endl;
-	cout << "PointB1 y = " << B1.y << endl << endl;
-	cout << "PointB2 x = " << B2.x << endl;
-	cout << "PointB2 y = " << B2.y << endl << endl;
+	//Json_Write(vPointsPtr);
+	vector<double> 			tmpVector;
+	vector<vector<double>> 	outputData;		//	Every element is - ID, x, y;
+
+	for (size_t i = 0; i < pointsChangeable.size(); i++)
+	{
+		tmpVector.push_back(pointsChangeable[i]->ID);
+		tmpVector.push_back(pointsChangeable[i]->x);
+		tmpVector.push_back(pointsChangeable[i]->y);
+
+		outputData.push_back(tmpVector);
+		tmpVector.clear();
+	}
+
+
+	for (size_t i = 0; i < vPointsPtr.size(); i++)
+		free(vPointsPtr[i]);
+
+	return (outputData);
 }
+//}
+
+EMSCRIPTEN_BINDINGS(stl_wrappers) {
+	emscripten::register_vector<double>("VectorDouble");
+	emscripten::register_vector<std::vector<double>>("VectorVectorDouble");
+}
+
+EMSCRIPTEN_BINDINGS(module) {
+	emscripten::function("Solver", &Solver);
+}
+
+
+
+
+//int main()
+//{
+//	Point A1{ 2, 2 };
+//	Point A2{ 4, 8 };
+//	Point B1{ 3, 2 };
+//	Point B2{ 8, 2 };
+//
+//	vector<Point*> vPointsPtr = { &A1, &A2, &B1, &B2 };
+//
+//	auto constr = CreateConstraint_Parallelism_of_2_lines(&A1, &A2, &B1, &B2);
+//	auto constr_2 = CreateConstraint_Distance_between_2_points(&A1, &A2, 4);
+//	auto constr_3 = CreateConstraint_Distance_between_2_points(&B1, &B2, 5);
+//	vector<Constraint> vConstr = { constr, constr_2, constr_3 };
+//
+//
+//	ft_CycleApproximation(vConstr, vPointsPtr, &A2, nullptr);
+//
+//	
+//
+//	cout << "PointA1 x = " << A1.x << endl;
+//	cout << "PointA1 y = " << A1.y << endl << endl;
+//	cout << "PointA2 x = " << A2.x << endl;
+//	cout << "PointA2 y = " << A2.y << endl << endl;
+//	cout << endl;
+//	cout << "PointB1 x = " << B1.x << endl;
+//	cout << "PointB1 y = " << B1.y << endl << endl;
+//	cout << "PointB2 x = " << B2.x << endl;
+//	cout << "PointB2 y = " << B2.y << endl << endl;
+//}
