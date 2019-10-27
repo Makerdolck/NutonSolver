@@ -1,0 +1,57 @@
+{
+	"Points":
+	[
+	  {
+		"id": 1,
+		"x": 2,
+		"y": 2,
+		"fixed": false
+	  },
+	  {
+		"id": 2,
+		"x": 4,
+		"y": 8,
+		"fixed": false
+	  },
+	  {
+		"id": 5,
+		"x": 3,
+		"y": 2,
+		"fixed": false
+	  },
+	  {
+		"id": 4,
+		"x": 8,
+		"y": 2,
+		"fixed": false
+	  }
+	],
+	"Constraints":
+	[
+	  {
+		"point1": 1,
+		"point2": 2,
+		"point3": 5,
+		"point4": 4,
+		"value": 0.0,
+		"Type": "Parallelism_of_2_lines"
+	  },
+	  {
+		"point1": 1,
+		"point2": 2,
+		"point3": 0,
+		"point4": 0,
+		"value": 4.0,
+		"Type": "Distance_between_2_points"
+	  },
+	  {
+		"point1": 5,
+		"point2": 4,
+		"point3": 0,
+		"point4": 0,
+		"value": 5.0,
+		"Type": "Distance_between_2_points"
+	  }
+	],
+	"MovablePoints_id":[2, 0]
+  }
