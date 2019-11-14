@@ -124,6 +124,10 @@ static	void	ft_GaussMethod(double** coefficients, double* freeCoefficients, size
 	{
 		for (size_t j = k + 1; j < dimension; j++)
 		{
+			double	a = coefficients[j][k],
+					b = coefficients[k][k];
+			if (coefficients[k][k] == 0)
+				MakeDiagonal_NonZero(coefficients, freeCoefficients, 0, dimension);
 			d = coefficients[j][k] / coefficients[k][k]; // формула (1)
 			for (size_t i = k; i < dimension; i++)
 			{
