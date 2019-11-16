@@ -116,7 +116,7 @@ static	void	ft_Jacobi(size_t matrixSize, double** mJacobian, double* f, double* 
 	delete[] TempX;
 }
 
-static	void	ft_GaussMethod(double** coefficients, double* freeCoefficients, size_t dimension, double* result)
+static	bool	ft_GaussMethod(double** coefficients, double* freeCoefficients, size_t dimension, double* result)
 {
 	double d, s;
 
@@ -127,7 +127,8 @@ static	void	ft_GaussMethod(double** coefficients, double* freeCoefficients, size
 			double	a = coefficients[j][k],
 					b = coefficients[k][k];
 			if (coefficients[k][k] == 0)
-				MakeDiagonal_NonZero(coefficients, freeCoefficients, 0, dimension);
+				if (MakeDiagonal_NonZero(coefficients, freeCoefficients, 0, dimension) == false)
+					return (false);
 			d = coefficients[j][k] / coefficients[k][k]; // формула (1)
 			for (size_t i = k; i < dimension; i++)
 			{
@@ -145,21 +146,26 @@ static	void	ft_GaussMethod(double** coefficients, double* freeCoefficients, size
 			s = coefficients[k][j] * result[j]; // формула (4)
 			d = d + s; // формула (4)
 		}
+		if (coefficients[k][k] == 0)
+			if (MakeDiagonal_NonZero(coefficients, freeCoefficients, 0, dimension) == false)
+				return (false);
 		result[k] = (freeCoefficients[k] - d) / coefficients[k][k]; // формула (4)
 	}
+
+	return (true);
 }
 
-static	void	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points, double** mJacobian, size_t matrixSize, double* Ls)
+static	bool	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points, double** mJacobian, size_t matrixSize, double* Ls)
 {
 	double* f;
 	double* results;
 
 	if (!(f = (double*)calloc(matrixSize, sizeof(double))))
-		return;
+		return (false);
 	if (!(results = (double*)calloc(matrixSize, sizeof(double))))
 	{
 		free(f);
-		return;
+		return (false);
 	}
 
 	// заполнение вектора значений функций на предыдущей итеррации
@@ -169,10 +175,11 @@ static	void	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points,
 		results[i] = 0;
 	}
 
-	MakeDiagonal_NonZero(mJacobian, f, 0, matrixSize);
+	if (MakeDiagonal_NonZero(mJacobian, f, 0, matrixSize) == false)
+		return (false);
 
-	ft_GaussMethod(mJacobian, f, matrixSize, results);
-
+	if (ft_GaussMethod(mJacobian, f, matrixSize, results) == false)
+		return (false);
 
 	for (size_t i = 0; (i < points.size() * 2) && (i < matrixSize); i++)
 	{
@@ -187,9 +194,11 @@ static	void	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points,
 
 	free(results);
 	free(f);
+
+	return (true);
 }
 
-static	void	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> points)
+static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> points)
 {
 	size_t			matrixSize;
 
@@ -203,19 +212,19 @@ static	void	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 
 	Ls = (double*)calloc(points.size() * 2, sizeof(double));
 	amendments = (double*)calloc(matrixSize, sizeof(double));
-	if (!Ls)			return;
-	if (!amendments)	return;
+	if (!Ls)			return (false);
+	if (!amendments)	return (false);
 	for (size_t i = 0; i < points.size() * 2; i++)
 		Ls[i] = 1;
 
 	mJacobian = (double**)calloc(matrixSize, sizeof(double*));
 	if (!mJacobian)
-		return;
+		return (false);
 	for (size_t i = 0; i < matrixSize; i++)
 	{
 		mJacobian[i] = (double*)calloc(matrixSize, sizeof(double));
 		if (!mJacobian[i])
-			return;
+			return (false);
 		for (size_t j = 0; j < matrixSize; j++)
 			mJacobian[i][j] = 0;
 	}
@@ -242,7 +251,8 @@ static	void	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 			}
 		}
 
-		ft_FindDeltas(Constraints, points, mJacobian, matrixSize, Ls);
+		if (ft_FindDeltas(Constraints, points, mJacobian, matrixSize, Ls) == false)
+			return (false);
 
 		//-- Calculate Norm
 		norm = 0;
@@ -270,6 +280,8 @@ static	void	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 	for (size_t i = 0; i < matrixSize; i++)
 		free(mJacobian[i]);
 	free(mJacobian);
+
+	return (true);
 }
 
 static	void	ft_CycleApproximation(vector<Constraint> Constraints, vector<Point*> points, Point* pointChangeable1, Point* pointChangeable2)
@@ -282,7 +294,8 @@ static	void	ft_CycleApproximation(vector<Constraint> Constraints, vector<Point*>
 
 	double norm, norm_old;
 
-	ft_NewtonMethod(Constraints, points);
+	if (ft_NewtonMethod(Constraints, points) == false)
+		return;
 
 	norm = pow(pointChangeable1->x - pointIdeal1.x, 2) + pow(pointChangeable1->y - pointIdeal1.y, 2);
 	if (pointChangeable2)
@@ -301,7 +314,8 @@ static	void	ft_CycleApproximation(vector<Constraint> Constraints, vector<Point*>
 			pointChangeable2->y = pointIdeal2.y;
 		}
 
-		ft_NewtonMethod(Constraints, points);
+		if (ft_NewtonMethod(Constraints, points) == false)
+			return;
 
 		norm = pow(pointChangeable1->x - pointIdeal1.x, 2) + pow(pointChangeable1->y - pointIdeal1.y, 2);
 		if (pointChangeable2)
