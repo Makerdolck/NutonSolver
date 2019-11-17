@@ -6,4 +6,4 @@ int		JacobiMethod(double** coefficients, double* rightPart, size_t numberOfEquat
 bool	MakeDiagonal_NonZero(double** coefficients, double* rightPart, size_t currColumn, size_t numberOfEquation);
 
 void	Inverting_the_matrix(double** matrix, int size);
-void	Print_matrix(double** arr, int size);
+void	Print_matrix(double** arr, size_t size);

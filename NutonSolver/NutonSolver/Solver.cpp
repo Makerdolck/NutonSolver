@@ -92,30 +92,6 @@ static	double	ft_Equation_i(vector<Constraint> Constraints, vector<Point*> point
 	return (res);
 }
 
-static	void	ft_Jacobi(size_t matrixSize, double** mJacobian, double* f, double* results)
-{
-	double* TempX = new double[matrixSize];
-	double norm; // норма, определяемая как наибольшая разность компонент столбца иксов соседних итераций.
-
-	do {
-		for (int i = 0; i < matrixSize; i++) {
-			TempX[i] = f[i];
-			for (int g = 0; g < matrixSize; g++) {
-				if (i != g)
-					TempX[i] -= mJacobian[i][g] * results[g];
-			}
-			TempX[i] /= mJacobian[i][i];
-		}
-		norm = fabs(results[0] - TempX[0]);
-		for (int h = 0; h < matrixSize; h++) {
-			if (fabs(results[h] - TempX[h]) > norm)
-				norm = fabs(results[h] - TempX[h]);
-			results[h] = TempX[h];
-		}
-	} while (norm > eps);
-	delete[] TempX;
-}
-
 static	bool	ft_GaussMethod(double** coefficients, double* freeCoefficients, size_t dimension, double* result)
 {
 	double d, s;
@@ -128,7 +104,10 @@ static	bool	ft_GaussMethod(double** coefficients, double* freeCoefficients, size
 					b = coefficients[k][k];
 			if (coefficients[k][k] == 0)
 				if (MakeDiagonal_NonZero(coefficients, freeCoefficients, 0, dimension) == false)
-					return (false);
+				{
+					coefficients[k][k] = 1;
+					//return (false);
+				}
 			d = coefficients[j][k] / coefficients[k][k]; // формула (1)
 			for (size_t i = k; i < dimension; i++)
 			{
@@ -148,10 +127,13 @@ static	bool	ft_GaussMethod(double** coefficients, double* freeCoefficients, size
 		}
 		if (coefficients[k][k] == 0)
 			if (MakeDiagonal_NonZero(coefficients, freeCoefficients, 0, dimension) == false)
-				return (false);
+			{
+				coefficients[k][k] = 1;
+				//return (false);
+			}
+		double rrr = coefficients[k][k];
 		result[k] = (freeCoefficients[k] - d) / coefficients[k][k]; // формула (4)
 	}
-
 	return (true);
 }
 
@@ -175,8 +157,7 @@ static	bool	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points,
 		results[i] = 0;
 	}
 
-	if (MakeDiagonal_NonZero(mJacobian, f, 0, matrixSize) == false)
-		return (false);
+	MakeDiagonal_NonZero(mJacobian, f, 0, matrixSize);
 
 	if (ft_GaussMethod(mJacobian, f, matrixSize, results) == false)
 		return (false);
@@ -188,13 +169,12 @@ static	bool	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points,
 		else
 			points[i / 2]->dy -= results[i];
 	}
-
+	//cout << endl;
 	for (size_t i = points.size() * 2; i < matrixSize; i++)
 		Ls[i - points.size() * 2] -= results[i];
 
 	free(results);
 	free(f);
-
 	return (true);
 }
 
@@ -202,11 +182,11 @@ static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 {
 	size_t			matrixSize;
 
-	double* Ls,
-		* amendments,
-		** mJacobian,
-		norm,
-		norm_old;
+	double	* Ls,
+			* amendments,
+			** mJacobian,
+			norm,
+			norm_old;
 
 	matrixSize = (Constraints.size() + points.size() * 2);
 
@@ -238,6 +218,7 @@ static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 	}
 	norm = sqrt(norm);
 
+
 	do
 	{
 		norm_old = norm;
@@ -252,7 +233,7 @@ static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 		}
 
 		if (ft_FindDeltas(Constraints, points, mJacobian, matrixSize, Ls) == false)
-			return (false);
+			return (false);		
 
 		//-- Calculate Norm
 		norm = 0;
@@ -280,7 +261,6 @@ static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 	for (size_t i = 0; i < matrixSize; i++)
 		free(mJacobian[i]);
 	free(mJacobian);
-
 	return (true);
 }
 
@@ -351,7 +331,7 @@ vector<vector<double>>	Solver(string json_str)
 
 	for (size_t i = 0; i < pointsChangeable.size(); i++)
 	{
-		tmpVector.push_back(pointsChangeable[i]->ID);
+		tmpVector.push_back((double)pointsChangeable[i]->ID);
 		tmpVector.push_back(pointsChangeable[i]->x);
 		tmpVector.push_back(pointsChangeable[i]->y);
 
@@ -381,30 +361,38 @@ EMSCRIPTEN_BINDINGS(module) {
 
 //int main()
 //{
-//	Point A1{ 2, 2 };
-//	Point A2{ 4, 8 };
-//	Point B1{ 3, 2 };
-//	Point B2{ 8, 2 };
+//	Solver(string("{\"Points\":[{\"x\":403.5,\"y\":156.50245154530512,\"id\":2,\"fixed\":false},{\"x\":494.5,\"y\":156.50245154530512,\"id\":3,\"fixed\":false},{\"x\":886.5,\"y\":156.5024515453051,\"id\":4,\"fixed\":false},{\"x\":31.5,\"y\":436.5,\"id\":1,\"fixed\":false}],\"Constraints\":[{\"point1\":2,\"point2\":3,\"point3\":0,\"point4\":0,\"Type\":\"Horizontal_line\",\"value\":0},{\"point1\":3,\"point2\":4,\"point3\":0,\"point4\":0,\"Type\":\"Horizontal_line\",\"value\":0},{\"point1\":3,\"point2\":4,\"point3\":1,\"point4\":2,\"Type\":\"Perpendicularity_of_2_lines\",\"value\":0}],\"MovablePoints_id\":[1,0]}"));
 //
-//	vector<Point*> vPointsPtr = { &A1, &A2, &B1, &B2 };
+//	//Solver(string("{\"Points\":[{\"x\":186.5,\"y\":148.69101063626525,\"id\":1,\"fixed\":false},{\"x\":644.1078155936365,\"y\":148.69101063626525,\"id\":2,\"fixed\":false},{\"x\":675.4993986095989,\"y\":333.50010215221425,\"id\":3,\"fixed\":false},{\"x\":158.44742109835744,\"y\":421.3259427986679,\"id\":4,\"fixed\":false},{\"x\":761.5,\"y\":669.5,\"id\":5,\"fixed\":false},{\"x\":987.5,\"y\":210.5,\"id\":6,\"fixed\":false}],\"Constraints\":[{\"point1\":1,\"point2\":2,\"point3\":0,\"point4\":0,\"Type\":\"Horizontal_line\",\"value\":0},{\"point1\":2,\"point2\":3,\"point3\":3,\"point4\":4,\"Type\":\"Perpendicularity_of_2_lines\",\"value\":0},{\"point1\":3,\"point2\":4,\"point3\":5,\"point4\":6,\"Type\":\"Parallelism_of_2_lines\",\"value\":0}],\"MovablePoints_id\":[5,0]}"));
 //
-//	auto constr = CreateConstraint_Parallelism_of_2_lines(&A1, &A2, &B1, &B2);
-//	auto constr_2 = CreateConstraint_Distance_between_2_points(&A1, &A2, 4);
-//	auto constr_3 = CreateConstraint_Distance_between_2_points(&B1, &B2, 5);
-//	vector<Constraint> vConstr = { constr, constr_2, constr_3 };
+//	//Solver(string("{\"Points\": [{\"x\":239.96297512089856, \"y\" : 368.31119251883246, \"id\" : 2, \"fixed\" : false}, { \"x\":346.0370248791015,\"y\" : 296.6888074811675,\"id\" : 3,\"fixed\" : false }, { \"x\":394.5000971461387,\"y\" : 607.5001438751914,\"id\" : 4,\"fixed\" : false }, { \"x\":544.4393780978064,\"y\" : 506.25946401927314,\"id\" : 5,\"fixed\" : false }] , \"Constraints\" : [{\"point1\":2, \"point2\" : 3, \"point3\" : 4, \"point4\" : 5, \"Type\" : \"Parallelism_of_2_lines\", \"value\" : 0}, { \"point1\":2,\"point2\" : 3,\"point3\" : 0,\"point4\" : 0,\"Type\" : \"Vertical_line\",\"value\" : 0 }] , \"MovablePoints_id\" : [2, 0] }"));
 //
 //
-//	ft_CycleApproximation(vConstr, vPointsPtr, &A2, nullptr);
-//
-//	
-//
-//	cout << "PointA1 x = " << A1.x << endl;
-//	cout << "PointA1 y = " << A1.y << endl << endl;
-//	cout << "PointA2 x = " << A2.x << endl;
-//	cout << "PointA2 y = " << A2.y << endl << endl;
-//	cout << endl;
-//	cout << "PointB1 x = " << B1.x << endl;
-//	cout << "PointB1 y = " << B1.y << endl << endl;
-//	cout << "PointB2 x = " << B2.x << endl;
-//	cout << "PointB2 y = " << B2.y << endl << endl;
+////	/*Point A1{ 2, 2 };
+////	Point A2{ 4, 8 };
+////	Point B1{ 3, 2 };
+////	Point B2{ 8, 2 };
+////
+////	vector<Point*> vPointsPtr = { &A1, &A2, &B1, &B2 };
+////
+////	auto constr = CreateConstraint_Parallelism_of_2_lines(&A1, &A2, &B1, &B2);
+////	auto constr_2 = CreateConstraint_Distance_between_2_points(&A1, &A2, 4);
+////	auto constr_3 = CreateConstraint_Distance_between_2_points(&B1, &B2, 5);
+////	vector<Constraint> vConstr = { constr, constr_2, constr_3 };
+////
+////
+////	ft_CycleApproximation(vConstr, vPointsPtr, &A2, nullptr);
+////
+////	
+////
+////	cout << "PointA1 x = " << A1.x << endl;
+////	cout << "PointA1 y = " << A1.y << endl << endl;
+////	cout << "PointA2 x = " << A2.x << endl;
+////	cout << "PointA2 y = " << A2.y << endl << endl;
+////	cout << endl;
+////	cout << "PointB1 x = " << B1.x << endl;
+////	cout << "PointB1 y = " << B1.y << endl << endl;
+////	cout << "PointB2 x = " << B2.x << endl;
+////	cout << "PointB2 y = " << B2.y << endl << endl;*/
 //}
+//

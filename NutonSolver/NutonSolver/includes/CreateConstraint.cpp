@@ -187,28 +187,54 @@ Constraint	CreateConstraint_Belonging_point_to_line(Point* A1, Point* A2, Point 
 	constr.func_dA1x = &Constraint_Belonging_point_to_line_dA1x;
 	constr.func_dA1x_dA2x = &Constraint_Belonging_point_to_line_dA1x_dA2x;
 	constr.func_dA1x_dB1x = &Constraint_Belonging_point_to_line_dA1x_dB1x;
+	constr.func_dA1x_dA2y = &Constraint_Belonging_point_to_line_dA1x_dA2y;
+	constr.func_dA1x_dB1y = &Constraint_Belonging_point_to_line_dA1x_dB1y;
 
 	constr.func_dA1y = &Constraint_Belonging_point_to_line_dA1y;
 	constr.func_dA1y_dA2y = &Constraint_Belonging_point_to_line_dA1y_dA2y;
 	constr.func_dA1y_dB1y = &Constraint_Belonging_point_to_line_dA1y_dB1y;
+	constr.func_dA1y_dA2x = &Constraint_Belonging_point_to_line_dA1y_dA2x;
+	constr.func_dA1y_dB1x = &Constraint_Belonging_point_to_line_dA1y_dB1x;
 
 	constr.func_dA2x = &Constraint_Belonging_point_to_line_dA2x;
 	constr.func_dA2x_dA1x = &Constraint_Belonging_point_to_line_dA2x_dA1x;
 	constr.func_dA2x_dB1x = &Constraint_Belonging_point_to_line_dA2x_dB1x;
+	constr.func_dA2x_dA1y = &Constraint_Belonging_point_to_line_dA2x_dA1y;
+	constr.func_dA2x_dB1y = &Constraint_Belonging_point_to_line_dA2x_dB1y;
 
 	constr.func_dA2y = &Constraint_Belonging_point_to_line_dA2y;
 	constr.func_dA2y_dA1y = &Constraint_Belonging_point_to_line_dA2y_dA1y;
 	constr.func_dA2y_dB1y = &Constraint_Belonging_point_to_line_dA2y_dB1y;
+	constr.func_dA2y_dA1x = &Constraint_Belonging_point_to_line_dA2y_dA1x;
+	constr.func_dA2y_dB1x = &Constraint_Belonging_point_to_line_dA2y_dB1x;
 
 	constr.func_dB1x = &Constraint_Belonging_point_to_line_dB1x;
 	constr.func_dB1x_dA1x = &Constraint_Belonging_point_to_line_dB1x_dA1x;
 	constr.func_dB1x_dA2x = &Constraint_Belonging_point_to_line_dB1x_dA2x;
 	constr.func_dB1x_dB1x = &Constraint_Belonging_point_to_line_dB1x_dB1x;
+	constr.func_dB1x_dA1y = &Constraint_Belonging_point_to_line_dB1x_dA1y;
+	constr.func_dB1x_dA2y = &Constraint_Belonging_point_to_line_dB1x_dA2y;
 
 	constr.func_dB1y = &Constraint_Belonging_point_to_line_dB1y;
 	constr.func_dB1y_dA1y = &Constraint_Belonging_point_to_line_dB1y_dA1y;
 	constr.func_dB1y_dA2y = &Constraint_Belonging_point_to_line_dB1y_dA2y;
 	constr.func_dB1y_dB1y = &Constraint_Belonging_point_to_line_dB1y_dB1y;
+	constr.func_dB1y_dA1x = &Constraint_Belonging_point_to_line_dB1y_dA1x;
+	constr.func_dB1y_dA2x = &Constraint_Belonging_point_to_line_dB1y_dA2x;
+
+	//// Point projection to Line
+
+	//double	lambda,
+	//	x = A2->x - A,
+	//	y = Vector.Y;
+	//// TODO : Normalization
+
+	//lambda = (-1) * (x * A1->x + y * A1->y  +
+	//		x * (-1) * (point->X) + y * (-1) * (point->Y)) /
+	//		(x * x + y * y);
+
+	//B1->x = A1->x + x * lambda;
+	//B1->y = A1->y + y * lambda;
 
 	return (constr);
 }

@@ -149,3 +149,22 @@ double Constraint_Belonging_point_to_line_dB1y(Point A1, Point A2, Point B1, Poi
 double Constraint_Belonging_point_to_line_dB1y_dA1y(Point A1, Point A2, Point B1, Point B2, double _value);
 double Constraint_Belonging_point_to_line_dB1y_dA2y(Point A1, Point A2, Point B1, Point B2, double _value);
 double Constraint_Belonging_point_to_line_dB1y_dB1y(Point A1, Point A2, Point B1, Point B2, double _value);
+
+//	---	---	--- New
+double Constraint_Belonging_point_to_line_dA1x_dA2y(Point A1, Point A2, Point B1, Point B2, double _value);
+double Constraint_Belonging_point_to_line_dA1x_dB1y(Point A1, Point A2, Point B1, Point B2, double _value);
+
+double Constraint_Belonging_point_to_line_dA1y_dA2x(Point A1, Point A2, Point B1, Point B2, double _value);
+double Constraint_Belonging_point_to_line_dA1y_dB1x(Point A1, Point A2, Point B1, Point B2, double _value);
+
+double Constraint_Belonging_point_to_line_dA2x_dA1y(Point A1, Point A2, Point B1, Point B2, double _value);
+double Constraint_Belonging_point_to_line_dA2x_dB1y(Point A1, Point A2, Point B1, Point B2, double _value);
+
+double Constraint_Belonging_point_to_line_dA2y_dA1x(Point A1, Point A2, Point B1, Point B2, double _value);
+double Constraint_Belonging_point_to_line_dA2y_dB1x(Point A1, Point A2, Point B1, Point B2, double _value);
+
+double Constraint_Belonging_point_to_line_dB1x_dA1y(Point A1, Point A2, Point B1, Point B2, double _value);
+double Constraint_Belonging_point_to_line_dB1x_dA2y(Point A1, Point A2, Point B1, Point B2, double _value);
+
+double Constraint_Belonging_point_to_line_dB1y_dA1x(Point A1, Point A2, Point B1, Point B2, double _value);
+double Constraint_Belonging_point_to_line_dB1y_dA2x(Point A1, Point A2, Point B1, Point B2, double _value);

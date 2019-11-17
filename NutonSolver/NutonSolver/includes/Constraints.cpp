@@ -402,7 +402,7 @@ double Constraint_Angle_of_2_lines_dA1x(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double x1_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -421,7 +421,7 @@ double Constraint_Angle_of_2_lines_dA2x(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double x1_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -440,7 +440,7 @@ double Constraint_Angle_of_2_lines_dA1y(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double y1_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -459,7 +459,7 @@ double Constraint_Angle_of_2_lines_dA2y(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double y1_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -478,7 +478,7 @@ double Constraint_Angle_of_2_lines_dB1x(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double x2_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -497,7 +497,7 @@ double Constraint_Angle_of_2_lines_dB2x(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double x2_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -516,7 +516,7 @@ double Constraint_Angle_of_2_lines_dB1y(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double y2_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -536,7 +536,7 @@ double Constraint_Angle_of_2_lines_dB2y(Point A1, Point A2, Point B1, Point B2, 
 {
 	double x1, x2, y1, y2;
 	double y2_h;
-	double angle;
+	//double angle;
 	// step for counting derivation
 	double h = 0.01;
 
@@ -575,7 +575,7 @@ double Constraint_Angle_of_2_lines_dA1x_dB1x(Point A1, Point A2, Point B1, Point
 double Constraint_Angle_of_2_lines_dA1x_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
-	double x1_h, x2_h , y1_h, y2_h;
+	double x1_h, x2_h; //y1_h, y2_h;
 	double h = 0.01;
 	x1 = A1.x + A1.dx - A2.x - A2.dx;
 	y1 = A1.y + A1.dy - A2.y - A2.dy;
@@ -594,7 +594,7 @@ double Constraint_Angle_of_2_lines_dA1x_dB2x(Point A1, Point A2, Point B1, Point
 double Constraint_Angle_of_2_lines_dA1y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
-	double x1_h, x2_h , y1_h, y2_h;
+	double y1_h, y2_h;// x1_h, x2_h, ;
 	double h = 0.01;
 	x1 = A1.x + A1.dx - A2.x - A2.dx;
 	y1 = A1.y + A1.dy - A2.y - A2.dy;
@@ -613,7 +613,7 @@ double Constraint_Angle_of_2_lines_dA1y_dB1y(Point A1, Point A2, Point B1, Point
 double Constraint_Angle_of_2_lines_dA1y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
-	double x1_h, x2_h , y1_h, y2_h;
+	double y1_h, y2_h; // x1_h, x2_h
 	double h = 0.01;
 	x1 = A1.x + A1.dx - A2.x - A2.dx;
 	y1 = A1.y + A1.dy - A2.y - A2.dy;
@@ -633,7 +633,7 @@ double Constraint_Angle_of_2_lines_dA1y_dB2y(Point A1, Point A2, Point B1, Point
 double Constraint_Angle_of_2_lines_dA2x_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
-	double x1_h, x2_h , y1_h, y2_h;
+	double x1_h, x2_h; // y1_h, y2_h;
 	double h = 0.01;
 	x1 = A1.x + A1.dx - A2.x - A2.dx;
 	y1 = A1.y + A1.dy - A2.y - A2.dy;
@@ -652,7 +652,7 @@ double Constraint_Angle_of_2_lines_dA2x_dB1x(Point A1, Point A2, Point B1, Point
 double Constraint_Angle_of_2_lines_dA2x_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
-	double x1_h, x2_h , y1_h, y2_h;
+	double x1_h, x2_h;// y1_h, y2_h;
 	double h = 0.01;
 	x1 = A1.x + A1.dx - A2.x - A2.dx;
 	y1 = A1.y + A1.dy - A2.y - A2.dy;
@@ -672,7 +672,7 @@ double Constraint_Angle_of_2_lines_dA2x_dB2x(Point A1, Point A2, Point B1, Point
 double Constraint_Angle_of_2_lines_dA2y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
-	double x1_h, x2_h , y1_h, y2_h;
+	double y1_h, y2_h; //x1_h, x2_h , 
 	double h = 0.01;
 	x1 = A1.x + A1.dx - A2.x - A2.dx;
 	y1 = A1.y + A1.dy - A2.y - A2.dy;
@@ -690,7 +690,7 @@ double Constraint_Angle_of_2_lines_dA2y_dB1y(Point A1, Point A2, Point B1, Point
 double Constraint_Angle_of_2_lines_dA2y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
-	double x1_h, x2_h , y1_h, y2_h;
+	double y1_h, y2_h; //x2_h , x1_h, 
 	double h = 0.01;
 	x1 = A1.x + A1.dx - A2.x - A2.dx;
 	y1 = A1.y + A1.dy - A2.y - A2.dy;
@@ -783,111 +783,220 @@ double Constraint_Belonging_point_to_line(Point A1, Point A2, Point B1, Point B2
 {
 	double x1, x2, y1, y2;
 
-	x1 = B1.x + B1.dx - A1.x - A1.dx;
+	/*x1 = B1.x + B1.dx - A1.x - A1.dx;
 	y1 = B1.y + B1.dy - A1.y - A1.dy;
 
 	x2 = A2.x + A2.dx - B1.x - B1.dx;
-	y2 = A2.y + A2.dy - B1.y - B1.dy;
+	y2 = A2.y + A2.dy - B1.y - B1.dy;*/
 
-	return (x1 * x2 + y1 * y2);
+	//return (x1 * x2 + y1 * y2);	//x1 * x2 + y1 * y2
+
+	x1 = B1.x + B1.dx - A1.x - A1.dx;
+	y1 = B1.y + B1.dy - A1.y - A1.dy;
+
+	x2 = A2.x + A2.dx - A1.x - A1.dx;
+	y2 = A2.y + A2.dy - A1.y - A1.dy;
+
+	// Normalization
+	double length = sqrt(pow(x1, 2) + pow(y1, 2));
+	//x1 /= length;
+	//y1 /= length;
+
+	length = sqrt(pow(x2, 2) + pow(y2, 2));
+	x2 /= length;
+	y2 /= length;
+
+	return (x1 * y2 - x2 * y1);
 }
 
 double Constraint_Belonging_point_to_line_dA1x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-A2.dx - A2.x + B1.dx + B1.x);
+	//return (-A2.dx - A2.x + B1.dx + B1.x);
+	return (-A2.dy - A2.y + B1.dy + B1.y);
 }
 
 double Constraint_Belonging_point_to_line_dA1x_dA2x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-1);
+	//return (-1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dA1x_dB1x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
+	//return (1);
+	return (0);
+}
+
+//	---	---	--- New
+double Constraint_Belonging_point_to_line_dA1x_dA2y(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (-1);
+}
+
+double Constraint_Belonging_point_to_line_dA1x_dB1y(Point A1, Point A2, Point B1, Point B2, double _value)
+{
 	return (1);
 }
+//	---	---	---
 
 double Constraint_Belonging_point_to_line_dA1y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-A2.dy - A2.y + B1.dy + B1.y);
+	//return (-A2.dy - A2.y + B1.dy + B1.y);
+	return (-B1.dx - B1.x + A2.dx + A2.x);
 }
 
 double Constraint_Belonging_point_to_line_dA1y_dA2y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-1);
+	//return (-1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dA1y_dB1y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
+	//return (1);
+	return (0);
+}
+
+//	---	---	--- New
+double Constraint_Belonging_point_to_line_dA1y_dA2x(Point A1, Point A2, Point B1, Point B2, double _value)
+{
 	return (1);
 }
 
+double Constraint_Belonging_point_to_line_dA1y_dB1x(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (-1);
+}
+//	---	---	---
+
 double Constraint_Belonging_point_to_line_dA2x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-A1.dx - A1.x + B1.dx + B1.x);
+	//return (-A1.dx - A1.x + B1.dx + B1.x);
+	return (A1.dy + A1.y - B1.dy - B1.y);
 }
 
 double Constraint_Belonging_point_to_line_dA2x_dA1x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-1);
+	//return (-1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dA2x_dB1x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
+	//return (1);
+	return (0);
+}
+
+//	---	---	--- New
+double Constraint_Belonging_point_to_line_dA2x_dA1y(Point A1, Point A2, Point B1, Point B2, double _value)
+{
 	return (1);
 }
 
+double Constraint_Belonging_point_to_line_dA2x_dB1y(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (-1);
+}
+//	---	---	---
+
 double Constraint_Belonging_point_to_line_dA2y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-A1.dy - A1.y + B1.dy + B1.y);
+	//return (-A1.dy - A1.y + B1.dy + B1.y);
+	return (-A1.dx - A1.x + B1.dx + B1.x);
 }
 
 double Constraint_Belonging_point_to_line_dA2y_dA1y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-1);
+	//return (-1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dA2y_dB1y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
+	//return (1);
+	return (0);
+}
+
+//	---	---	--- New
+double Constraint_Belonging_point_to_line_dA2y_dA1x(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (-1);
+}
+
+double Constraint_Belonging_point_to_line_dA2y_dB1x(Point A1, Point A2, Point B1, Point B2, double _value)
+{
 	return (1);
 }
+//	---	---	---
 
 double Constraint_Belonging_point_to_line_dB1x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (A1.dx + A1.x + A2.dx + A2.x - 2 * B1.dx - 2 * B1.x);
+	//return (A1.dx + A1.x + A2.dx + A2.x - 2 * B1.dx - 2 * B1.x);
+	return (A2.dy + A2.y - A1.dy - A1.y);
 }
 
 double Constraint_Belonging_point_to_line_dB1x_dA1x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (1);
+	//return (1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dB1x_dA2x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (1);
+	//return (1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dB1x_dB1x(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-2);
+	//return (-2);
+	return (0);
 }
+
+//	---	---	--- New
+double Constraint_Belonging_point_to_line_dB1x_dA1y(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (-1);
+}
+
+double Constraint_Belonging_point_to_line_dB1x_dA2y(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (1);
+}
+//	---	---	---
 
 double Constraint_Belonging_point_to_line_dB1y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (A1.dy + A1.y + A2.dy + A2.y - 2 * B1.dy - 2 * B1.y);
+	//return (A1.dy + A1.y + A2.dy + A2.y - 2 * B1.dy - 2 * B1.y);
+	return (A1.dx + A1.x - A2.dx - A2.x);
 }
 
 double Constraint_Belonging_point_to_line_dB1y_dA1y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (1);
+	//return (1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dB1y_dA2y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (1);
+	//return (1);
+	return (0);
 }
 
 double Constraint_Belonging_point_to_line_dB1y_dB1y(Point A1, Point A2, Point B1, Point B2, double _value)
 {
-	return (-2);
+	//return (-2);
+	return (0);
 }
+
+//	---	---	--- New
+double Constraint_Belonging_point_to_line_dB1y_dA1x(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (1);
+}
+
+double Constraint_Belonging_point_to_line_dB1y_dA2x(Point A1, Point A2, Point B1, Point B2, double _value)
+{
+	return (-1);
+}
+//	---	---	---
