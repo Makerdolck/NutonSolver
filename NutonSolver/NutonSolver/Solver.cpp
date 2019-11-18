@@ -394,5 +394,6 @@ EMSCRIPTEN_BINDINGS(module) {
 ////	cout << "PointB1 y = " << B1.y << endl << endl;
 ////	cout << "PointB2 x = " << B2.x << endl;
 ////	cout << "PointB2 y = " << B2.y << endl << endl;*/
+//	return (0);
 //}
-//
+

@@ -287,7 +287,7 @@ Constraint CreateConstraint_Angle_between_2_lines(Point* A1, Point* A2, Point* B
 	constr.func_dA2y_dA1x = &Constraint_Angle_of_2_lines_dA2y_dA1x;
 	constr.func_dA2y_dA1y = &Constraint_Angle_of_2_lines_dA2y_dA1y;
 	constr.func_dA2y_dA2x = &Constraint_Angle_of_2_lines_dA2y_dA2x;
-	constr.func_dA2y_dA2y = &Constraint_Angle_of_2_lines_dA2y_dA2y;
+	//constr.func_dA2y_dA2y = &Constraint_Angle_of_2_lines_dA2y_dA2y;
 	constr.func_dA2y_dB1x = &Constraint_Angle_of_2_lines_dA2y_dB1x;
 	constr.func_dA2y_dB1y = &Constraint_Angle_of_2_lines_dA2y_dB1y;
 	constr.func_dA2y_dB2x = &Constraint_Angle_of_2_lines_dA2y_dB2x;
