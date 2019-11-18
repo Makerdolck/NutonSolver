@@ -89,30 +89,100 @@ double Constraint_Perpendicularity_of_2_lines_dB2y_dA2y(Point A1, Point A2, Poin
 /*																							Constraint_Angle_of_2_lines				*/
 
 double Constraint_Angle_of_2_lines(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1x_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1x_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1x_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1x_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA1x_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1x_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA1x_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1x_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1y_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1y_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1y_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1y_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1y_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA1y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA1y_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA1y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dA1y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dA1y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2x_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2x_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2x_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2x_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA2x_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2x_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA2x_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2x_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dA2x_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dA2x_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2y_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2y_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2y_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2y_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2y_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA2y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dA2y_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dA2y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dA2y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dA2y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB1x_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1x_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB1x_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1x_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1x_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1x_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1x_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1x_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB1x_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB1x_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1y_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB1y_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1y_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB1y_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1y_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1y_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB1y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB1y_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB1y_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB2x_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2x_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB2x_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2x_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2x_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2x_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2x_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2x_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB2x_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB2x_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+
 double Constraint_Angle_of_2_lines_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2y_dA1x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB2y_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2y_dA2x(Point A1, Point A2, Point B1, Point B2, double _angle);
 double Constraint_Angle_of_2_lines_dB2y_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2y_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2y_dB1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2y_dB2x(Point A1, Point A2, Point B1, Point B2, double _angle);
+double Constraint_Angle_of_2_lines_dB2y_dB2y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB2y_dA1y(Point A1, Point A2, Point B1, Point B2, double _angle);
+// double Constraint_Angle_of_2_lines_dB2y_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle);
 
 /*																							Constraint_Horizontal_line				*/
 

@@ -248,31 +248,96 @@ Constraint CreateConstraint_Angle_between_2_lines(Point* A1, Point* A2, Point* B
 	constr.pointB2 = B2;
 
 	constr.func = &Constraint_Angle_of_2_lines;
+
 	constr.func_dA1x = &Constraint_Angle_of_2_lines_dA1x;
+
+	constr.func_dA1x_dA1x = &Constraint_Angle_of_2_lines_dA1x_dA1x;
+	constr.func_dA1x_dA1y = &Constraint_Angle_of_2_lines_dA1x_dA1y;
+	constr.func_dA1x_dA2x = &Constraint_Angle_of_2_lines_dA1x_dA2x;
+	constr.func_dA1x_dA2y = &Constraint_Angle_of_2_lines_dA1x_dA2y;
+	constr.func_dA1x_dB1x = &Constraint_Angle_of_2_lines_dA1x_dB1x;
+	constr.func_dA1x_dB1y = &Constraint_Angle_of_2_lines_dA1x_dB1y;
+	constr.func_dA1x_dB2x = &Constraint_Angle_of_2_lines_dA1x_dB2x;
+	constr.func_dA1x_dB2y = &Constraint_Angle_of_2_lines_dA1x_dB2y;
+
 	constr.func_dA1y = &Constraint_Angle_of_2_lines_dA1y;
+
+	constr.func_dA1y_dA1x = &Constraint_Angle_of_2_lines_dA1y_dA1x;
+	constr.func_dA1y_dA1y = &Constraint_Angle_of_2_lines_dA1y_dA1y;
+	constr.func_dA1y_dA2x = &Constraint_Angle_of_2_lines_dA1y_dA2x;
+	constr.func_dA1y_dA2y = &Constraint_Angle_of_2_lines_dA1y_dA2y;
+	constr.func_dA1y_dB1x = &Constraint_Angle_of_2_lines_dA1y_dB1x;
+	constr.func_dA1y_dB1y = &Constraint_Angle_of_2_lines_dA1y_dB1y;
+	constr.func_dA1y_dB2x = &Constraint_Angle_of_2_lines_dA1y_dB2x;
+	constr.func_dA1y_dB2y = &Constraint_Angle_of_2_lines_dA1y_dB2y;
+
 	constr.func_dA2x = &Constraint_Angle_of_2_lines_dA2x;
+
+	constr.func_dA2x_dA1x = &Constraint_Angle_of_2_lines_dA2x_dA1x;
+	constr.func_dA2x_dA1y = &Constraint_Angle_of_2_lines_dA2x_dA1y;
+	constr.func_dA2x_dA2x = &Constraint_Angle_of_2_lines_dA2x_dA2x;
+	constr.func_dA2x_dA2y = &Constraint_Angle_of_2_lines_dA2x_dA2y;
+	constr.func_dA2x_dB1x = &Constraint_Angle_of_2_lines_dA2x_dB1x;
+	constr.func_dA2x_dB1y = &Constraint_Angle_of_2_lines_dA2x_dB1y;
+	constr.func_dA2x_dB2x = &Constraint_Angle_of_2_lines_dA2x_dB2x;
+	constr.func_dA2x_dB2y = &Constraint_Angle_of_2_lines_dA2x_dB2y;
+
 	constr.func_dA2y = &Constraint_Angle_of_2_lines_dA2y;
+
+	constr.func_dA2y_dA1x = &Constraint_Angle_of_2_lines_dA2y_dA1x;
+	constr.func_dA2y_dA1y = &Constraint_Angle_of_2_lines_dA2y_dA1y;
+	constr.func_dA2y_dA2x = &Constraint_Angle_of_2_lines_dA2y_dA2x;
+	constr.func_dA2y_dA2y = &Constraint_Angle_of_2_lines_dA2y_dA2y;
+	constr.func_dA2y_dB1x = &Constraint_Angle_of_2_lines_dA2y_dB1x;
+	constr.func_dA2y_dB1y = &Constraint_Angle_of_2_lines_dA2y_dB1y;
+	constr.func_dA2y_dB2x = &Constraint_Angle_of_2_lines_dA2y_dB2x;
+	constr.func_dA2y_dB2y = &Constraint_Angle_of_2_lines_dA2y_dB2y;
+
 	constr.func_dB1x = &Constraint_Angle_of_2_lines_dB1x;
+
+	constr.func_dB1x_dA1x = &Constraint_Angle_of_2_lines_dB1x_dA1x;
+	constr.func_dB1x_dA1y = &Constraint_Angle_of_2_lines_dB1x_dA1y;
+	constr.func_dB1x_dA2x = &Constraint_Angle_of_2_lines_dB1x_dA2x;
+	constr.func_dB1x_dA2y = &Constraint_Angle_of_2_lines_dB1x_dA2y;
+	constr.func_dB1x_dB1x = &Constraint_Angle_of_2_lines_dB1x_dB1x;
+	constr.func_dB1x_dB1y = &Constraint_Angle_of_2_lines_dB1x_dB1y;
+	constr.func_dB1x_dB2x = &Constraint_Angle_of_2_lines_dB1x_dB2x;
+	constr.func_dB1x_dB2y = &Constraint_Angle_of_2_lines_dB1x_dB2y;
+
 	constr.func_dB1y = &Constraint_Angle_of_2_lines_dB1y;
+
+	constr.func_dB1y_dA1x = &Constraint_Angle_of_2_lines_dB1y_dA1x;
+	constr.func_dB1y_dA1y = &Constraint_Angle_of_2_lines_dB1y_dA1y;
+	constr.func_dB1y_dA2x = &Constraint_Angle_of_2_lines_dB1y_dA2x;
+	constr.func_dB1y_dA2y = &Constraint_Angle_of_2_lines_dB1y_dA2y;
+	constr.func_dB1y_dB1x = &Constraint_Angle_of_2_lines_dB1y_dB1x;
+	constr.func_dB1y_dB1y = &Constraint_Angle_of_2_lines_dB1y_dB1y;
+	constr.func_dB1y_dB2x = &Constraint_Angle_of_2_lines_dB1y_dB2x;
+	constr.func_dB1y_dB2y = &Constraint_Angle_of_2_lines_dB1y_dB2y;
+
 	constr.func_dB2x = &Constraint_Angle_of_2_lines_dB2x;
+
+	constr.func_dB2x_dA1x = &Constraint_Angle_of_2_lines_dB2x_dA1x;
+	constr.func_dB2x_dA1y = &Constraint_Angle_of_2_lines_dB2x_dA1y;
+	constr.func_dB2x_dA2x = &Constraint_Angle_of_2_lines_dB2x_dA2x;
+	constr.func_dB2x_dA2y = &Constraint_Angle_of_2_lines_dB2x_dA2y;
+	constr.func_dB2x_dB1x = &Constraint_Angle_of_2_lines_dB2x_dB1x;
+	constr.func_dB2x_dB1y = &Constraint_Angle_of_2_lines_dB2x_dB1y;
+	constr.func_dB2x_dB2x = &Constraint_Angle_of_2_lines_dB2x_dB2x;
+	constr.func_dB2x_dB2y = &Constraint_Angle_of_2_lines_dB2x_dB2y;
+
 	constr.func_dB2y = &Constraint_Angle_of_2_lines_dB2y;
 
-	constr.func_dA1x_dB1x = &Constraint_Angle_of_2_lines_dA1x_dB1x;
-	constr.func_dA1x_dB2x = &Constraint_Angle_of_2_lines_dA1x_dB2x;
-	constr.func_dA1y_dB1y = &Constraint_Angle_of_2_lines_dA1y_dB1y;
-	constr.func_dA1y_dB2y = &Constraint_Angle_of_2_lines_dA1y_dB2y;
-	constr.func_dA2x_dB1x = &Constraint_Angle_of_2_lines_dA2x_dB1x;
-	constr.func_dA2x_dB2x = &Constraint_Angle_of_2_lines_dA2x_dB2x;
-	constr.func_dA2y_dB1y = &Constraint_Angle_of_2_lines_dA2y_dB1y;
-	constr.func_dA2y_dB2y = &Constraint_Angle_of_2_lines_dA2y_dB2y;
-	constr.func_dB1x_dA1x = &Constraint_Angle_of_2_lines_dB1x_dA1x;
-	constr.func_dB1x_dA2x = &Constraint_Angle_of_2_lines_dB1x_dA2x;
-	constr.func_dB1y_dA1y = &Constraint_Angle_of_2_lines_dB1y_dA1y;
-	constr.func_dB1y_dA2y = &Constraint_Angle_of_2_lines_dB1y_dA2y;
-	constr.func_dB2x_dA1x = &Constraint_Angle_of_2_lines_dB2x_dA1x;
-	constr.func_dB2x_dA2x = &Constraint_Angle_of_2_lines_dB2x_dA2x;
+	constr.func_dB2y_dA1x = &Constraint_Angle_of_2_lines_dB2y_dA1x;
 	constr.func_dB2y_dA1y = &Constraint_Angle_of_2_lines_dB2y_dA1y;
+	constr.func_dB2y_dA2x = &Constraint_Angle_of_2_lines_dB2y_dA2x;
 	constr.func_dB2y_dA2y = &Constraint_Angle_of_2_lines_dB2y_dA2y;
+	constr.func_dB2y_dB1x = &Constraint_Angle_of_2_lines_dB2y_dB1x;
+	constr.func_dB2y_dB1y = &Constraint_Angle_of_2_lines_dB2y_dB1y;
+	constr.func_dB2y_dB2x = &Constraint_Angle_of_2_lines_dB2y_dB2x;
+	constr.func_dB2y_dB2y = &Constraint_Angle_of_2_lines_dB2y_dB2y;
+
+	
 
 	return constr;
 }
