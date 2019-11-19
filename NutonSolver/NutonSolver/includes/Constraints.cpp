@@ -1110,6 +1110,29 @@ double Constraint_Angle_of_2_lines_dA2y_dA2x(Point A1, Point A2, Point B1, Point
 	return Constraint_Angle_of_2_lines_dA2x_dA2y(A1, A2, B1, B2, _angle);
 }
 
+double Constraint_Angle_of_2_lines_dA2y_dA2y(Point A1, Point A2, Point B1, Point B2, double _angle)
+{
+	double x1, x2, y1, y2;
+
+	x1 = A1.x + A1.dx - A2.x - A2.dx;	// a + b - c - d
+	// x1_h = A1.x + A1.dx + h - A2.x - A2.dx - h;
+	y1 = A1.y + A1.dy - A2.y - A2.dy;	// i + j - k - l
+
+	x2 = B1.x + B1.dx - B2.x - B2.dx;	// e + f - g -h
+	y2 = B1.y + B1.dy - B2.y - B2.dy;	// m + n - o - p
+
+	double length1 = pow(x1, 2) + pow(y1, 2);		// квадрат длины первого отрезка
+	double length2 = pow(x2, 2) + pow(y2, 2);		// квадрат длины второго отрезка
+
+	double first_m = 3 * (-x1) * y1 * (-x2 * A2.dy + x1 * B2.dy + x1 * B2.y + (-x1) * B1.dy - x1 * B1.y
+	+ (-x2) * A2.y + x2 * A1.dy - A1.y * (-x2)) / (sqrt(length2) * pow(length1, 2.5));;
+
+	double second_m = (-x1 * (-x2)) / (pow(length1, 1.5) * sqrt(length2));
+
+	
+	return -first_m - second_m;
+}
+
 double Constraint_Angle_of_2_lines_dA2y_dB1x(Point A1, Point A2, Point B1, Point B2, double _angle)
 {
 	double x1, x2, y1, y2;
