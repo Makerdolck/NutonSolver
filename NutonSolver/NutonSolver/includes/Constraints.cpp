@@ -122,6 +122,16 @@ double Constraint_Parallelism_of_2_lines(Point A1, Point A2, Point B1, Point B2,
 	x2 = B1.x + B1.dx - B2.x - B2.dx;
 	y2 = B1.y + B1.dy - B2.y - B2.dy;
 
+
+	//// Normalization
+	//double length = sqrt(pow(x1, 2) + pow(y1, 2));
+	//x1 /= length;
+	//y1 /= length;
+
+	///*length = sqrt(pow(x2, 2) + pow(y2, 2));
+	//x2 /= length;
+	//y2 /= length;*/
+
 	return (x1 * y2 - x2 * y1);
 }
 
@@ -256,6 +266,16 @@ double Constraint_Perpendicularity_of_2_lines(Point A1, Point A2, Point B1, Poin
 
 	x2 = B1.x + B1.dx - B2.x - B2.dx;
 	y2 = B1.y + B1.dy - B2.y - B2.dy;
+
+
+	//// Normalization
+	//double length = sqrt(pow(x1, 2) + pow(y1, 2));
+	//x1 /= length;
+	//y1 /= length;
+
+	///*length = sqrt(pow(x2, 2) + pow(y2, 2));
+	//x2 /= length;
+	//y2 /= length;*/
 
 	return (x1 * x2 + y1 * y2);
 }

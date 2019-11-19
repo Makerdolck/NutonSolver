@@ -128,8 +128,8 @@ static	bool	ft_GaussMethod(double** coefficients, double* freeCoefficients, size
 		if (coefficients[k][k] == 0)
 			if (MakeDiagonal_NonZero(coefficients, freeCoefficients, 0, dimension) == false)
 			{
-				coefficients[k][k] = 1;
-				//return (false);
+				//coefficients[k][k] = 1;
+				return (false);
 			}
 		double rrr = coefficients[k][k];
 		result[k] = (freeCoefficients[k] - d) / coefficients[k][k]; // формула (4)
@@ -181,6 +181,7 @@ static	bool	ft_FindDeltas(vector<Constraint> Constraints, vector<Point*> points,
 static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> points)
 {
 	size_t			matrixSize;
+	int				maxIterCount = 75;
 
 	double	* Ls,
 			* amendments,
@@ -243,8 +244,8 @@ static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 			norm += amendments[i] * amendments[i];
 		}
 		norm = sqrt(norm);
-
-	} while (fabs(norm_old - norm) >= eps);
+		
+	} while ((fabs(norm_old - norm) >= eps) && (maxIterCount-- > 0));
 
 	//-- Recalculation of point's coordinates
 	for (size_t i = 0; i < points.size(); i++)
@@ -266,6 +267,7 @@ static	bool	ft_NewtonMethod(vector<Constraint> Constraints, vector<Point*> point
 
 static	void	ft_CycleApproximation(vector<Constraint> Constraints, vector<Point*> points, Point* pointChangeable1, Point* pointChangeable2)
 {
+	int		maxIterCount = 20;
 	Point	pointIdeal1(pointChangeable1->x, pointChangeable1->y),
 			pointIdeal2;
 
@@ -302,7 +304,7 @@ static	void	ft_CycleApproximation(vector<Constraint> Constraints, vector<Point*>
 			norm += pow(pointChangeable2->x - pointIdeal2.x, 2) + pow(pointChangeable2->y - pointIdeal2.y, 2);
 		norm = sqrt(norm);
 
-	} while (fabs(norm - norm_old) > eps);
+	} while ((fabs(norm - norm_old) > eps) && (maxIterCount-- > 0));
 
 }
 
@@ -358,7 +360,7 @@ EMSCRIPTEN_BINDINGS(module) {
 
 
 
-
+//
 //int main()
 //{
 //	Solver(string("{\"Points\":[{\"x\":403.5,\"y\":156.50245154530512,\"id\":2,\"fixed\":false},{\"x\":494.5,\"y\":156.50245154530512,\"id\":3,\"fixed\":false},{\"x\":886.5,\"y\":156.5024515453051,\"id\":4,\"fixed\":false},{\"x\":31.5,\"y\":436.5,\"id\":1,\"fixed\":false}],\"Constraints\":[{\"point1\":2,\"point2\":3,\"point3\":0,\"point4\":0,\"Type\":\"Horizontal_line\",\"value\":0},{\"point1\":3,\"point2\":4,\"point3\":0,\"point4\":0,\"Type\":\"Horizontal_line\",\"value\":0},{\"point1\":3,\"point2\":4,\"point3\":1,\"point4\":2,\"Type\":\"Perpendicularity_of_2_lines\",\"value\":0}],\"MovablePoints_id\":[1,0]}"));
@@ -396,4 +398,4 @@ EMSCRIPTEN_BINDINGS(module) {
 ////	cout << "PointB2 y = " << B2.y << endl << endl;*/
 //	return (0);
 //}
-
+//
